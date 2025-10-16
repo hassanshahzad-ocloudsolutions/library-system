@@ -1,0 +1,5 @@
+Algorithms In Depth
+Shahid Aslam
+Comprehensive guide to algorithms
+None
+True

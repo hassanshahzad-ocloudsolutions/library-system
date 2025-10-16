@@ -1,0 +1,5 @@
+Machine Learning Basics
+Kamran Ali
+An introductory guide to machine learning concepts and algorithms.
+Hassan Shahzad
+False
