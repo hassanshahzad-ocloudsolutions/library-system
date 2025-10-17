@@ -6,7 +6,7 @@ import pickle #will help in writing and reading whole object in .pkl file
 #Taking title as primary key means it will be unique. No two books can have same title
 
 
-#Using picke for serialization and deserialization
+#Using pickle for serialization and deserialization
 '''
 Data Storing Format in File
 
