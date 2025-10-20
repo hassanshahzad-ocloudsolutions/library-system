@@ -25,15 +25,14 @@ class Library:
         enter_title = input("Enter Book Title: ").title()
         enter_author = input("Enter Author Name: ").title()
         enter_content = input("Enter Content: ")
-        enter_borrower= input("Enter Borrower Name: ").title()
-        enter_available = True if enter_borrower=="None" else False
+        enter_available = True
 
         file_name = f"./{enter_title.replace(' ', '_')}.txt"
 
         if os.path.exists(file_name):
             print(f"{enter_title} book already exists in records")
         else:
-            book_record = Book(enter_title, enter_author,enter_content, enter_borrower, enter_available)
+            book_record = Book(enter_title, enter_author,enter_content, "None", enter_available)
 
             #will create a new file if not exists
             with open(file_name,'+a') as f:
@@ -42,6 +41,9 @@ class Library:
                 f.write(f'{book_record.content}\n')
                 f.write(f'{book_record.borrower}\n')
                 f.write(f'{str(book_record.is_available)}\n')
+            
+            print(f"{enter_title} Record Added Successfully")
+            
 
     #delete record     
     def delete_record(self):
@@ -51,6 +53,7 @@ class Library:
         file_name = f"./{enter_title.replace(" ", "_").lower().title()}.txt"
         if os.path.exists(file_name):
             os.remove(file_name)
+            print(f"\n{enter_title} Record Deleted")
         else:
             print("No such record exists.")
 
@@ -64,7 +67,9 @@ class Library:
             with open(file_name, 'r') as f:
                 for line in f.readlines():
                     data.append(line.strip())
-                book = Book(data[0], data[1], data[2], data[3], bool(data[4]))
+                is_available = data[4].strip().lower() == "true"
+                book = Book(data[0], data[1], data[2], data[3], is_available)
+                
             return str(book)
         return "No such record exists."
     
@@ -72,22 +77,26 @@ class Library:
     def edit_record(self):
         print('\n-----Editing Record-----\n')
         enter_title = input("Enter Book Title: ").title()
-        enter_author = input("Enter Author Name: ").title()
         enter_content = input("Update Content: ")
-        enter_borrower= input("Update Borrower Name(if book returned put None): ").title()
-        enter_available = True if enter_borrower == "None" else False
 
         file_name = f"./{enter_title.replace(' ', '_').lower().title()}.txt"
-
+        data = []
         if os.path.exists(file_name):
-            book_record = Book(enter_title,enter_author,enter_content, enter_borrower, enter_available)
+            with open(file_name, 'r') as f:
+                for line in f.readlines():
+                    data.append(line.strip())
+                is_available = data[4].strip().lower() == "true"
+                book = Book(data[0], data[1], enter_content, data[3], is_available)
+
             #will create a new file if not exists
-            with open(file_name,'w') as f:
-                f.write(f'{book_record.title}\n')
-                f.write(f'{book_record.author}\n')
-                f.write(f'{book_record.content}\n')
-                f.write(f'{book_record.borrower}\n')
-                f.write(f'{str(book_record.is_available)}\n')
+                with open(file_name,'w') as f:
+                    f.write(f'{book.title}\n')
+                    f.write(f'{book.author}\n')
+                    f.write(f'{book.content}\n')
+                    f.write(f'{book.borrower}\n')
+                    f.write(f'{str(book.is_available)}\n')
+
+            print(f"\n{book.title} Record Edited")
         else:
             print("No such record exists.")
 
@@ -121,7 +130,7 @@ class Library:
                     f.write(f"{book.borrower}\n")
                     f.write(f"{book.is_available}\n")
 
-                print(f'{book.title} borrowed by {book.borrower}')
+                print(f'\n{book.title} borrowed by {book.borrower}')
             else:
                 print("Book is already borrowed by someone else.")
         else:
@@ -145,6 +154,7 @@ class Library:
                     f2.write(f"{book.content}\n")
                     f2.write(f"{book.borrower}\n")
                     f2.write(f"{book.is_available}\n")
+                    print(f'\n{book.title} returned by {enter_borrower_name}')
             else:
                 print("No such record exists.")
         else:

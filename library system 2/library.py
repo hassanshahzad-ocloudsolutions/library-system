@@ -29,15 +29,14 @@ class Library:
         enter_title = input("Enter Book Title: ").title()
         enter_author = input("Enter Author Name: ").title()
         enter_content = input("Enter Content: ")
-        enter_borrower= input("Enter Borrower Name: ").title()
-        enter_available = True if enter_borrower=="None" else False
+        enter_available = True 
 
         file_name = f"./{enter_title.replace(' ', '_')}.pkl"
 
         if os.path.exists(file_name):
             print(f"{enter_title} book already exists in records")
         else:
-            book_record = Book(enter_title, enter_author,enter_content, enter_borrower, enter_available)
+            book_record = Book(enter_title, enter_author,enter_content, "None", enter_available)
             #will create a new file if not exists and stores whole object after serializing it
             with open(file_name, "wb") as f:
                 pickle.dump(book_record, f)
@@ -71,15 +70,15 @@ class Library:
     def edit_record(self):
         print('\n-----Editing Record-----\n')
         enter_title = input("Enter Book Title: ").title()
-        enter_author = input("Enter Author Name: ").title()
         enter_content = input("Update Content: ")
-        enter_borrower= input("Update Borrower Name(if book returned put None): ").title()
-        enter_available = True if enter_borrower == "None" else False
 
         file_name = f"./{enter_title.replace(' ', '_').lower().title()}.pkl"
 
         if os.path.exists(file_name):
-            book_record = Book(enter_title,enter_author,enter_content, enter_borrower, enter_available)
+            with open(file_name,'rb') as f:
+                fetch_book = pickle.load(f)
+            
+            book_record = Book (enter_title, fetch_book.author, enter_content, fetch_book.borrower, fetch_book.is_available)
             #will create a new file if not exists
             with open(file_name,'wb') as f:
                 pickle.dump(book_record,f)
@@ -131,7 +130,9 @@ class Library:
                 book = Book( book_data.title,book_data.author,book_data.content,"None",True)
                 with open(file_name, 'wb') as f:
                     pickle.dump(book,f)
-                    
+
+                print(f'{book.title} returned by {enter_borrower_name}')
+     
             else:
                 print("No such record exists.")
         else:

@@ -1,5 +1,5 @@
 Python Basics
 John Doe
-Introduction to Python programming that will make you pro
-Ali Shahzad
-False
+Introduction to Python programming that will make you pro from a beginner
+None
+True
